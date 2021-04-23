@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h1> Jamie's Awesome BTC ARb calculator </h1>
+
+    <br>
+
+    <button id="refresh">click to refresh data</button>
+
+    <br>
+
+    <br>
+
+    <a href="BSS.html">Click here to go to the rand BSS front end</a>
+
+
+    <h2> ARB Table</h2>
+
+    <p>BTC_ARB: <span id="BTC_ARB"></span></p>
+    <p>ETH_ARB: <span id="ETH_ARB"></span></p>
+    <p>XRP_ARB: <span id="XRP_ARB"></span></p>
+
+
+    <h2>Bitcoin</h2>
+
+    <h2>bitstamp data BTC </h2>
+
+
+    <p>Ask: <span id="ask"></span></p>
+    <p>Bid: <span id="bid"></span></p>
+    <p>Last: <span id="last"></span></p>
+
+    <h2>luno data</h2>
+
+    <p>Ask: <span id="askl"></span></p>
+    <p>Bid: <span id="bidl"></span></p>
+    <p>Last: <span id="lastl"></span></p>
+    <p>ZAR_USD: <span id="ZARUSD"></span></p>
+    <p>ARB: <span id="ARB"></span></p>
+
+    <br>
+
+    <br>
+
+
+    <h2>Etherium</h2>
+
+    <h2>bitstamp data BTC </h2>
+
+
+    <p>Ask: <span id="Eask"></span></p>
+    <p>Bid: <span id="Ebid"></span></p>
+    <p>Last: <span id="Elast"></span></p>
+
+    <h2>luno data</h2>
+
+    <p>Ask: <span id="Easkl"></span></p>
+    <p>Bid: <span id="Ebidl"></span></p>
+    <p>Last: <span id="Elastl"></span></p>
+    <p>ZAR_USD: <span id="EZARUSD"></span></p>
+    <p>ARB: <span id="EARB"></span></p>
+
+
+
+    <h2>Ripple</h2>
+
+    <br>
+
+    <h2>bitstamp data XRP </h2>
+
+
+    <p>Ask: <span id="Xask"></span></p>
+    <p>Bid: <span id="Xbid"></span></p>
+    <p>Last: <span id="Xlast"></span></p>
+
+    <h2>luno data</h2>
+
+    <p>Ask: <span id="Xaskl"></span></p>
+    <p>Bid: <span id="Xbidl"></span></p>
+    <p>Last: <span id="Xlastl"></span></p>
+    <p>Volume: <span id="Xvolumel"></span></p>
+    <p>Volume_ZAR: <span id="XvolumelZ"></span></p>
+    <p>ZAR_USD: <span id="XZARUSD"></span></p>
+    <p>ARB: <span id="XARB"></span></p>
+
+
+
+
+
+
+
+
+
+    <script>
+        let bs_ask;
+        let bs_bid;
+        let bs_last;
+
+        let luno_ask;
+        let luno_bid;
+        let luno_last;
+
+        let ZAR_USD;
+
+        let luno_ask_usd;
+        let luno_bid_USD;
+        let luno_last_USD;
+
+        let bs_last_USD
+        var ARB
+
+
+        //ETh
+
+        let Ebs_ask;
+        let Ebs_bid;
+        let Ebs_last;
+
+        let Eluno_ask;
+        let Eluno_bid;
+        let Eluno_last;
+
+        let Eluno_ask_usd;
+        let Eluno_bid_USD;
+        let Eluno_last_USD;
+
+        let Ebs_last_USD
+        let EARB
+
+
+        //XRP
+
+        let Xbs_ask;
+        let Xbs_bid;
+        let Xbs_last;
+
+        let Xluno_ask;
+        let Xluno_bid;
+        let Xluno_last;
+
+        let Xluno_ask_usd;
+        let Xluno_bid_USD;
+        let Xluno_last_USD;
+
+        let Xbs_last_USD
+        let XARB
+
+        const Arb_data = []
+
+
+
+        main()
+
+
+        async function main() {
+
+            await Promise.all([
+                BS_Get(),
+                ETH_Get(),
+                XRP_Get(),
+
+            ]);
+
+            Arb_data.push({
+                "BTC": ARB,
+                "ETH": EARB,
+                "XRP": XARB,
+            })
+
+
+            const ARBDATA = (Arb_data);
+            const coptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ARBDATA) // body data type must match "Content-Type " header
+            };
+
+            const cresponse = await fetch('/arb_api', coptions);
+            const cjson = await cresponse.json();
+            //console.log(json);
+
+        }
+
+        ///document.getElementById("refresh")addEventListener(onclick)
+
+        //setInterval(main, 10000);
+
+
+
+        async function BS_Get() {
+
+            const pairs = {
+                pair: "btcusd "
+            };
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pairs) // body data type must match "Content-Type " header
+            };
+
+            const bs_response = await fetch('/BTAPI2', options);
+            const bs_json = await bs_response.json();
+            //console.log(bs_json);
+
+            //console.log(json)
+            bs_ask = Number(bs_json.ask)
+            bs_bid = Number(bs_json.bid)
+            bs_last = Number(bs_json.last)
+
+            //console.log(bs_ask)
+
+            //Returns the data from Luno 
+
+            const pair = {
+                pair: "XBTZAR "
+            };
+            const loptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pair) // body data type must match "Content-Type " header
+            };
+
+            const response = await fetch('/LUNOAPI2', loptions);
+            const json = await response.json();
+            //console.log(json);
+
+
+            luno_ask = Number(json.ask)
+            luno_bid = Number(json.bid)
+            luno_last = Number(json.last_trade)
+
+            //console.log(luno_ask)
+
+
+            const currency_url = `/CURRENCYAPI`;
+            const currency_response = await fetch(currency_url);
+            const currency_json = await currency_response.json();
+            //console.log(currency_json.rates.ZAR)
+            ZAR_USD = Number(currency_json.rates.ZAR)
+
+            //console.log(ZAR_USD)
+
+            document.getElementById("ask").innerHTML = bs_ask
+            document.getElementById('bid').innerHTML = bs_bid;
+            document.getElementById('last').innerHTML = bs_last
+            document.getElementById('askl').innerHTML = luno_ask
+            document.getElementById('bidl').innerHTML = luno_bid
+            document.getElementById('lastl').innerHTML = luno_last;
+            document.getElementById('ZARUSD').innerHTML = ZAR_USD;
+
+
+            luno_last_USD = luno_last / ZAR_USD
+            bs_last_USD = bs_last
+            ARB = (luno_last_USD - bs_last_USD) / bs_last_USD
+                //console.log(luno_last_USD)
+                //console.log(bs_last_USD)
+                //console.log(ARB)
+
+            document.getElementById('ARB').innerHTML = ARB
+            document.getElementById('BTC_ARB').innerHTML = ARB
+
+
+        }
+
+        //console.log(ARB)
+
+
+
+        async function ETH_Get() {
+
+            const pairs = {
+                pair: "ethusd "
+            };
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pairs) // body data type must match "Content-Type " header
+            };
+
+            const bs_response = await fetch('/BTAPI2', options);
+            const bs_json = await bs_response.json();
+            //console.log(bs_json);
+
+            //console.log(json)
+            Ebs_ask = Number(bs_json.ask)
+            Ebs_bid = Number(bs_json.bid)
+            Ebs_last = Number(bs_json.last)
+
+            console.log(Ebs_ask)
+
+            //Returns the data from Luno 
+
+            const pair = {
+                pair: "ETHZAR "
+            };
+            const loptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pair) // body data type must match "Content-Type " header
+            };
+
+            const response = await fetch('/LUNOAPI2', loptions);
+            const json = await response.json();
+            //console.log(json);
+
+
+            Eluno_ask = Number(json.ask)
+            Eluno_bid = Number(json.bid)
+            Eluno_last = Number(json.last_trade)
+
+            //console.log(Eluno_ask)
+
+
+            const currency_url = `/CURRENCYAPI`;
+            const currency_response = await fetch(currency_url);
+            const currency_json = await currency_response.json();
+            //console.log(currency_json.rates.ZAR)
+            ZAR_USD = Number(currency_json.rates.ZAR)
+
+            //console.log(ZAR_USD)
+
+            document.getElementById("Eask").innerHTML = Ebs_ask
+            document.getElementById('Ebid').innerHTML = Ebs_bid;
+            document.getElementById('Elast').innerHTML = Ebs_last
+            document.getElementById('Easkl').innerHTML = Eluno_ask
+            document.getElementById('Ebidl').innerHTML = Eluno_bid
+            document.getElementById('Elastl').innerHTML = Eluno_last;
+            document.getElementById('EZARUSD').innerHTML = ZAR_USD;
+
+
+            Eluno_last_USD = Eluno_last / ZAR_USD
+            Ebs_last_USD = Ebs_last
+            EARB = (Eluno_last_USD - Ebs_last_USD) / Ebs_last_USD
+                //console.log(Eluno_last_USD)
+                //console.log(Ebs_last_USD)
+                //console.log(EARB)
+
+            document.getElementById('EARB').innerHTML = EARB
+            document.getElementById('ETH_ARB').innerHTML = EARB
+
+            //Arb_data.push(EARB)
+
+        }
+
+
+
+
+        async function XRP_Get() {
+
+            const pairs = {
+                pair: "xrpusd "
+            };
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pairs) // body data type must match "Content-Type " header
+            };
+
+            const bs_response = await fetch('/BTAPI2', options);
+            const bs_json = await bs_response.json();
+            //console.log(bs_json);
+
+            //console.log(json)
+            Xbs_ask = Number(bs_json.ask)
+            Xbs_bid = Number(bs_json.bid)
+            Xbs_last = Number(bs_json.last)
+
+            //console.log(Xbs_ask)
+
+            //Returns the data from Luno 
+
+            const pair = {
+                pair: "XRPZAR "
+            };
+            const loptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pair) // body data type must match "Content-Type " header
+            };
+
+            const response = await fetch('/LUNOAPI2', loptions);
+            const json = await response.json();
+            //console.log(json);
+
+
+            Xluno_ask = Number(json.ask)
+            Xluno_bid = Number(json.bid)
+            Xluno_last = Number(json.last_trade)
+            Xluno_volume = Number(json.rolling_24_hour_volume)
+            Xluno_volume_ZAR = Xluno_volume * Xluno_last
+
+            //console.log("Luno Volume XRP " + Xluno_volume)
+
+
+            const currency_url = `/CURRENCYAPI`;
+            const currency_response = await fetch(currency_url);
+            const currency_json = await currency_response.json();
+            //console.log(currency_json.rates.ZAR)
+            ZAR_USD = Number(currency_json.rates.ZAR)
+
+            //console.log(ZAR_USD)
+
+            document.getElementById("Xask").innerHTML = Xbs_ask
+            document.getElementById('Xbid').innerHTML = Xbs_bid;
+            document.getElementById('Xlast').innerHTML = Xbs_last
+            document.getElementById('Xaskl').innerHTML = Xluno_ask
+            document.getElementById('Xbidl').innerHTML = Xluno_bid
+            document.getElementById('Xlastl').innerHTML = Xluno_last;
+            document.getElementById('Xvolumel').innerHTML = Xluno_volume
+            document.getElementById('XvolumelZ').innerHTML = Xluno_volume_ZAR
+            document.getElementById('XZARUSD').innerHTML = ZAR_USD;
+
+
+            Xluno_last_USD = Xluno_last / ZAR_USD
+            Xbs_last_USD = Xbs_last
+            XARB = (Xluno_last_USD - Xbs_last_USD) / Xbs_last_USD
+                //console.log(Xluno_last_USD)
+                //console.log(Xbs_last_USD)
+                //console.log(XARB)
+
+            document.getElementById('XARB').innerHTML = XARB
+            document.getElementById('XRP_ARB').innerHTML = XARB
+
+
+
+            //console.log(Arb_data)
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+        // // ARB_PUSH();
+        // // async function ARB_PUSH() {
+
+        // //     const data = "This is the data"
+
+        // //     const options = {
+        // //         method: 'POST',
+        // //         headers: {
+        // //             'Content-Type': 'application/json'
+        // //         },
+        // //         body: JSON.stringify(data)
+        // //     };
+
+        // //     const response = await fetch('/arb_api', options);
+        // //     const json = await response.json();
+        // // }
+    </script>
+
+
+
+</body>
+
+</html>

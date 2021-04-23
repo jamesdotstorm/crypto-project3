@@ -1,0 +1,21 @@
+{
+  "name": "btc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Bt_stamp.js",
+  "scripts": {
+    "test": "btc"
+  },
+  "keywords": [
+    "ntc"
+  ],
+  "author": "jamie",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fetch": "^1.1.0",
+    "neb": "^1.8.1",
+    "nedb": "^1.8.0",
+    "node-fetch": "^2.6.1"
+  }
+}

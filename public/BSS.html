@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
+</head>
+
+<body>
+
+    <h1>Jamies RAd front end for BSS </h1>
+
+    <a href="index.html">Click here to go to my rad arbitage calcuator</a>
+
+
+
+
+    <br>
+
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Binance</th>
+                <th scope="col">***</th>
+                <th scope="col">Luno</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td id="lBTC">??</td>
+                <td>XRP</td>
+                <td id="LLBTC">??</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>0</td>
+                <td>ZAR</td>
+                <td id="LZAR">??</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td id="BUSDT">??</td>
+                <td>USDT</td>
+                <td id="LZAR">0</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table">
+
+
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">***</th>
+                    <th scope="col">***</th>
+                    <th scope="col">***</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">USD/ZAR</th>
+                    <td id="FX">??aa</td>
+                    <td id="BTCtot">XRP_Tot_Value</td>
+                    <td id="BtcTot">??##!!</td>
+                </tr>
+                <tr>
+                    <th scope="row">PUT_In</th>
+                    <td id="PUT_In">??</td>
+                    <td>USD_Prof</td>
+                    <td id="USD_Prof">??hh</td>
+                </tr>
+                <tr>
+                    <th scope="row">Tot_USD </th>
+                    <td id="TOTUSD">??eeeR</td>
+                    <td>Total_prof</td>
+                    <td id="Tot_prof">0</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table">
+
+
+
+
+            <br>
+
+
+
+
+
+
+            <table class="table">
+
+
+
+
+
+
+                <thead class="thead-light">
+
+                    <script>
+                        main()
+
+                        async function main() {
+
+
+
+
+                            await Promise.all([
+                                bin_get(),
+                                luno_get(),
+                                FX_Get(),
+                                BS_Get(),
+
+                            ]);
+
+                            tot_val()
+
+                            function tot_val() {
+                                const USDTOT = (L_ZAR / ZAR_USD) + b_us_vol
+                                console.log(USDTOT)
+                                total_USD = USDTOT
+                                document.getElementById("TOTUSD").innerHTML = USDTOT
+
+                                const BTC_VAL = (b_vol + L_btc) * bs_last
+                                console.log(BTC_VAL)
+                                document.getElementById("BtcTot").innerHTML = BTC_VAL
+
+                                const USD_Prof = total_USD - starting_Balance
+                                console.log(USD_Prof)
+
+                                const Total_Prof = USD_Prof + BTC_VAL
+
+                                document.getElementById("Tot_prof").innerHTML = Total_Prof
+                                document.getElementById("USD_Prof").innerHTML = USD_Prof
+
+
+                            }
+
+
+                        }
+
+
+
+                        async function bin_get() {
+
+                            const api_url = ' http://us-central1-exchange-hunter.cloudfunctions.net/huntapi/balance?exchange=binance&tradeRoute=BuySellSend'
+                            const fetch_response = await fetch(api_url);
+                            const json = await fetch_response.json();
+                            console.log(json);
+                            b_vol = json[3].total
+                            b_us_vol = json[2].total
+                                //b_xrp_vol = json[3].total
+
+                            console.log(b_vol)
+                            console.log(b_us_vol)
+
+
+
+
+                            document.getElementById("lBTC").innerHTML = b_vol
+                            document.getElementById("BUSDT").innerHTML = b_us_vol
+
+
+
+                        }
+
+
+
+
+                        async function luno_get() {
+
+                            const api_url = ' http://us-central1-exchange-hunter.cloudfunctions.net/huntapi/balance?exchange=luno&tradeRoute=BuySellSend'
+                            const fetch_response = await fetch(api_url);
+                            const ljson = await fetch_response.json();
+                            console.log(ljson);
+                            L_btc = (ljson[1].total)
+                            L_ZAR = (ljson[2].total)
+                                //L_XRP = (ljson[2].total)
+                            console.log(L_btc)
+                            console.log(L_ZAR)
+
+                            document.getElementById("LLBTC").innerHTML = L_btc
+                            document.getElementById("LZAR").innerHTML = L_ZAR
+
+
+
+
+
+                        }
+
+
+
+
+                        async function FX_Get() {
+
+                            starting_Balance = 1007.2
+                            const currency_url = "https://data.fixer.io/api/latest?access_key=e1e62c233c37f4abfdcd28aa5a6b74ff&base=USD&symbols=ZAR";
+                            const currency_response = await fetch(currency_url);
+                            const currency_json = await currency_response.json();
+                            console.log(currency_json.rates.ZAR)
+                            ZAR_USD = Number(currency_json.rates.ZAR)
+                            document.getElementById("FX").innerHTML = ZAR_USD
+                            document.getElementById("PUT_In").innerHTML = starting_Balance
+
+                            console.log(ZAR_USD)
+
+                        }
+
+
+
+                        async function BS_Get() {
+
+                            const pairs = {
+                                pair: "xrpusd "
+                            };
+                            const options = {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(pairs) // body data type must match "Content-Type " header
+                            };
+
+                            const bs_response = await fetch('/BTAPI2', options);
+                            const bs_json = await bs_response.json();
+                            console.log(bs_json);
+
+                            //console.log(json)
+                            bs_ask = Number(bs_json.ask)
+                            bs_bid = Number(bs_json.bid)
+                            bs_last = Number(bs_json.last)
+                        }
+                    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
