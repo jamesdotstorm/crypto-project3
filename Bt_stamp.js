@@ -4,8 +4,12 @@ const fetch = require('node-fetch');
 const Datastore = require('nedb');
 
 const app = express();
-const port = process.env.port
-app.listen(3000, () => console.log('listening at 3000'));
+const port = process.env.port || 3000;
+app.listen(port, () => {
+    console.log('starting server at ${port}');
+});
+
+
 app.use(express.static('public')); //send the files to the public folder 
 app.use(express.json({ limit: '1mb' })); // tels the server to acceopt and recoginse JSON
 
