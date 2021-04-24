@@ -4,10 +4,18 @@ const fetch = require('node-fetch');
 const Datastore = require('nedb');
 
 const app = express();
-const port = process.env.port || 3000;
-app.listen(port, () => {
-    console.log('starting server at ${port}');
-});
+
+const port = process.env.PORT || 3000
+app.listen(port, () =>
+    console.log("starting server at" + port)
+);
+
+
+
+
+//app.listen(3000, () =>
+// console.log('Listening at port 3000')
+//);
 
 //this is my test change HHHHHHshshhshshsh
 
@@ -17,6 +25,12 @@ app.use(express.json({ limit: '1mb' })); // tels the server to acceopt and recog
 
 const database = new Datastore('database.db');
 database.loadDatabase();
+
+
+
+
+
+
 
 
 // app.get('/BTCAPI', async(request, response) => {
