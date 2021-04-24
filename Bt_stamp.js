@@ -9,6 +9,8 @@ app.listen(port, () => {
     console.log('starting server at ${port}');
 });
 
+//this is my test change 
+
 
 app.use(express.static('public')); //send the files to the public folder 
 app.use(express.json({ limit: '1mb' })); // tels the server to acceopt and recoginse JSON
