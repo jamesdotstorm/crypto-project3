@@ -70,7 +70,7 @@
                 <tr>
                     <th scope="row">USD/ZAR</th>
                     <td id="FX">??aa</td>
-                    <td id="BTCtot">XRP_Tot_Value</td>
+                    <td id="BTCtot">XRP_Value_USd</td>
                     <td id="BtcTot">??##!!</td>
                 </tr>
                 <tr>
@@ -81,10 +81,19 @@
                 </tr>
                 <tr>
                     <th scope="row">Tot_USD </th>
-                    <td id="TOTUSD">??eeeR</td>
+                    <td id="TOTUSD">??eeeR test</td>
                     <td>Total_prof</td>
                     <td id="Tot_prof">0</td>
                 </tr>
+                <tr>
+                    <th scope="row">Tot_Asset_Val </th>
+                    <td id="Tot_Asset_Val">??</td>
+                    <td>Total_prof_%%</td>
+                    <td id="Tot_Prof%">%%%</td>
+                </tr>
+
+
+
             </tbody>
         </table>
 
@@ -142,8 +151,15 @@
 
                                 const Total_Prof = USD_Prof + BTC_VAL
 
+                                const Prof_percentage = Total_Prof / starting_Balance
+
+                                const Tot_Asset_Val = total_USD + BTC_VAL
+
                                 document.getElementById("Tot_prof").innerHTML = Total_Prof
                                 document.getElementById("USD_Prof").innerHTML = USD_Prof
+                                document.getElementById("Tot_Prof%").innerHTML = Prof_percentage
+                                document.getElementById("Tot_Asset_Val").innerHTML = Tot_Asset_Val
+
 
 
                             }
@@ -205,7 +221,7 @@
 
                         async function FX_Get() {
 
-                            starting_Balance = 1007.2
+                            starting_Balance = 5979
                             const currency_url = "https://data.fixer.io/api/latest?access_key=e1e62c233c37f4abfdcd28aa5a6b74ff&base=USD&symbols=ZAR";
                             const currency_response = await fetch(currency_url);
                             const currency_json = await currency_response.json();
