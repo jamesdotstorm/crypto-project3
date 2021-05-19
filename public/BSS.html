@@ -48,7 +48,7 @@
             <tr>
                 <th scope="row">3</th>
                 <td id="BUSDT">??</td>
-                <td>USDT</td>
+                <td>BUSD</td>
                 <td id="LZAR">0</td>
             </tr>
         </tbody>
@@ -176,11 +176,12 @@
                             const json = await fetch_response.json();
                             console.log(json);
                             b_vol = json[3].total
-                            b_us_vol = json[2].total
+                            b_us_vol = json[4].total
                                 //b_xrp_vol = json[3].total
 
                             console.log(b_vol)
                             console.log(b_us_vol)
+                            console.log(api_url)
 
 
 
@@ -221,7 +222,7 @@
 
                         async function FX_Get() {
 
-                            starting_Balance = 5979
+                            starting_Balance = 15963
                             const currency_url = "https://data.fixer.io/api/latest?access_key=e1e62c233c37f4abfdcd28aa5a6b74ff&base=USD&symbols=ZAR";
                             const currency_response = await fetch(currency_url);
                             const currency_json = await currency_response.json();
